@@ -286,3 +286,25 @@ TEST_CASE("Can read expressions with IDs") {
 }
 #endif
 
+
+TEST_CASE("Can read expressions with brackets") {
+	REQUIRE(Tokenize("(27 + 13) - 175.5"sv) == TokenList{
+		Token{ TT_LEFT_ROUND_BRACKET },
+		Token{ TT_NUMBER, "27" },
+		Token{ TT_PLUS },
+		Token{ TT_NUMBER, "13" },
+		Token{ TT_RIGHT_ROUND_BRACKET },
+		Token{ TT_MINUS },
+		Token{ TT_NUMBER, "175.5" },
+		});
+
+	REQUIRE(Tokenize("[one, 2, three]"sv) == TokenList{
+		Token{ TT_LEFT_SQUARE_BRACKET },
+		Token{ TT_ID, "one" },
+		Token{ TT_COMMA },
+		Token{ TT_NUMBER, "2" },
+		Token{ TT_COMMA },
+		Token{ TT_ID, "three" },
+		Token{ TT_RIGHT_SQUARE_BRACKET },
+		});
+}

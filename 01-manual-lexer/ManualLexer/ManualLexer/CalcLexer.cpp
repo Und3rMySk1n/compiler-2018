@@ -102,11 +102,13 @@ Token CalcLexer::Read()
 	case '[':
 		return Token{ TT_LEFT_SQUARE_BRACKET };
 	case ']':
-		return Token{ TT_LEFT_SQUARE_BRACKET };
+		return Token{ TT_RIGHT_SQUARE_BRACKET };
 	case '{':
 		return Token{ TT_LEFT_CURLY_BRACKET };
 	case '}':
-		return Token{ TT_LEFT_CURLY_BRACKET };
+		return Token{ TT_RIGHT_CURLY_BRACKET };
+	case ',':
+		return Token{ TT_COMMA };
 	case '.':
 		return ReadNumber(next);
 	default:
