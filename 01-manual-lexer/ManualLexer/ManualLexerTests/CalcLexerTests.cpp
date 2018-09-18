@@ -84,7 +84,21 @@ TEST_CASE("Can read expression tokens", "[CalcLexer]") {
 		Token{ TT_PLUS },
 		Token{ TT_NUMBER, "28"s },
 		});
-#if 0 // fractional number support
+
+	REQUIRE(Tokenize("13+1-28*27/10"sv) == TokenList{
+		Token{ TT_NUMBER, "13"s },
+		Token{ TT_PLUS },
+		Token{ TT_NUMBER, "1"s },
+		Token{ TT_MINUS },
+		Token{ TT_NUMBER, "28"s },
+		Token{ TT_MULTIPLICATION },
+		Token{ TT_NUMBER, "27"s },
+		Token{ TT_DIVISION },
+		Token{ TT_NUMBER, "10"s },
+		});
+	
+
+#if 1 // fractional number support
 	REQUIRE(Tokenize("5+7.005"sv) == TokenList{
 		Token{ TT_NUMBER, "5" },
 		Token{ TT_PLUS },
@@ -100,7 +114,7 @@ TEST_CASE("Can read expression tokens", "[CalcLexer]") {
 #endif
 }
 
-#if 0 // whitespace support
+#if 1 // whitespace support
 TEST_CASE("Can read one operator with whitespaces", "[CalcLexer]") {
 	REQUIRE(Tokenize("  +"sv) == TokenList{
 		Token{ TT_PLUS },
@@ -157,7 +171,7 @@ TEST_CASE("Can read one number with whitespaces", "[CalcLexer]") {
 		Token{ TT_NUMBER, "9" },
 		});
 	REQUIRE(Tokenize("   \n  15"sv) == TokenList{
-		Token{ TT_NUMBER, 15 },
+		Token{ TT_NUMBER, "15" },
 		});
 	REQUIRE(Tokenize("\t   \n  21.03"sv) == TokenList{
 		Token{ TT_NUMBER, "21.03" },
@@ -203,7 +217,7 @@ TEST_CASE("Can read expression tokens with whitespaces") {
 }
 #endif
 
-#if 0 
+#if 1 
 TEST_CASE("Cannot read number which starts with zero") {
 	REQUIRE(Tokenize("0123456789"sv) == TokenList{
 		Token{ TT_ERROR },
@@ -236,3 +250,39 @@ TEST_CASE("Cannot read number which starts with zero") {
 		});
 }
 #endif
+
+#if 1 // IDs support
+TEST_CASE("Can read ID which starts with character") {
+	REQUIRE(Tokenize("thisIsSampleIdWithLettersOnly"sv) == TokenList{
+		Token{ TT_ID, "thisIsSampleIdWithLettersOnly" },
+		});
+	REQUIRE(Tokenize("Exampl3W1thD1g1t5"sv) == TokenList{
+		Token{ TT_ID, "Exampl3W1thD1g1t5" },
+		});
+	REQUIRE(Tokenize("_exampleStartsWithUnderscore123"sv) == TokenList{
+		Token{ TT_ID, "_exampleStartsWithUnderscore123" }
+		});
+	REQUIRE(Tokenize("_12___132__strange___ID__"sv) == TokenList{
+		Token{ TT_ID, "_12___132__strange___ID__" }
+		});
+}
+
+TEST_CASE("Can read expressions with IDs") {
+	REQUIRE(Tokenize("leftSide + rightSide"sv) == TokenList{
+		Token{ TT_ID, "leftSide" },
+		Token{ TT_PLUS },
+		Token{ TT_ID, "rightSide" },
+		});
+	REQUIRE(Tokenize("one - 2"sv) == TokenList{
+		Token{ TT_ID, "one" },
+		Token{ TT_MINUS },
+		Token{ TT_NUMBER, "2" },
+		});
+	REQUIRE(Tokenize("variableWithDigits27 / 10.05"sv) == TokenList{
+		Token{ TT_ID, "variableWithDigits27" },
+		Token{ TT_DIVISION },
+		Token{ TT_NUMBER, "10.05" },
+		});
+}
+#endif
+
