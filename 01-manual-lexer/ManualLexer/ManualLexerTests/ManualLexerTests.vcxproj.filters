@@ -3,5 +3,13 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CalcLexerTests.cpp" />
+    <ClCompile Include="GCalcLexerTests.cpp" />
+    <ClCompile Include="..\GeneratedLexer\GCalcLexer.cpp" />
+    <ClCompile Include="..\ManualLexer\CalcLexer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="..\GeneratedLexer\GCalcLexer.h" />
+    <ClInclude Include="..\ManualLexer\CalcLexer.h" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <optional>
+#include <boost/optional.hpp>
 
 namespace calc
 {
@@ -29,8 +29,8 @@ enum TokenType
 
 struct Token
 {
-	TokenType type = TT_END;
-	std::optional<std::string> value;
+	TokenType type;
+	boost::optional<std::string> value;
 };
 
 }

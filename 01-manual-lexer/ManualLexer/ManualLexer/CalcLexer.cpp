@@ -60,7 +60,7 @@ bool IsTabulation(char ch)
 }
 }
 
-CalcLexer::CalcLexer(std::string_view sources)
+CalcLexer::CalcLexer(std::string &sources)
 	: m_sources(sources)
 {
 }

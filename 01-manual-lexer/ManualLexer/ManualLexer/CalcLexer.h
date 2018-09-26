@@ -1,6 +1,4 @@
 #pragma once
-
-#include <string_view>
 #include "Token.h"
 
 namespace calc
@@ -9,7 +7,7 @@ namespace calc
 class CalcLexer
 {
 public:
-	CalcLexer(std::string_view sources);
+	CalcLexer(std::string &sources);
 
 	Token Read();
 
@@ -18,7 +16,7 @@ private:
 	Token ReadNumber(char head);
 	Token ReadId(char head);
 
-	std::string_view m_sources;
+	std::string m_sources;
 	size_t m_position = 0;
 };
 
