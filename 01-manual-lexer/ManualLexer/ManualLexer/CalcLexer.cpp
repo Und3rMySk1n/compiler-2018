@@ -1,6 +1,10 @@
 #include "CalcLexer.h"
 #include <cctype>
 
+// 1. Число не может начинаться с точки (например .5), покрыть тестами
+// 2. ЧИсло, которое начинается с цифр, а продолжается невалидными символами, должно возвращать токен с ошибкой
+// 3. Переименовать функцию IsTabulation
+
 namespace calc
 {
 namespace
@@ -43,7 +47,7 @@ bool IsIdCharacter(char ch)
 	}
 }
 
-bool IsTabulation(char ch)
+bool IsBlank(char ch)
 {
 	/*
 	 * Returns true if given character is tabulation.
@@ -53,6 +57,33 @@ bool IsTabulation(char ch)
 	case ' ':
 	case '\t':
 	case '\n':
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool IsBreakingSymbol(char ch)
+{
+	/*
+	* Returns true if given character is tabulation.
+	*/
+	switch (ch)
+	{
+	case ' ':
+	case '\t':
+	case '\n':
+	case '+':
+	case '-':
+	case '*':
+	case '/':
+	case '(':
+	case ')':
+	case '[':
+	case ']':
+	case '{':
+	case '}':
+	case ',':
 		return true;
 	default:
 		return false;
@@ -110,7 +141,7 @@ Token CalcLexer::Read()
 	case ',':
 		return Token{ TT_COMMA };
 	case '.':
-		return ReadNumber(next);
+		return ProcessErrorSymbol(next);
 	default:
 		break;
 	}
@@ -130,7 +161,7 @@ Token CalcLexer::Read()
 
 void CalcLexer::SkipSpaces()
 {
-	while (m_position < m_sources.size() && IsTabulation(m_sources[m_position]))
+	while (m_position < m_sources.size() && IsBlank(m_sources[m_position]))
 	{
 		++m_position;
 	}
@@ -147,13 +178,28 @@ Token CalcLexer::ReadNumber(char head)
 	std::string value;
 	value += head;
 
-	while (m_position < m_sources.size() && (IsDigit(m_sources[m_position]) || m_sources[m_position] == '.'))
+	int dotsCount = 0;
+	bool hasNotAllowedSymbols = false;
+
+	while (m_position < m_sources.size() && !IsBreakingSymbol(m_sources[m_position]))
 	{
+		if (!IsDigit(m_sources[m_position]) && m_sources[m_position] != '.')
+		{
+			hasNotAllowedSymbols = true;
+		}
+
+		if (m_sources[m_position] == '.')
+		{
+			dotsCount++;
+		}
+
 		value += m_sources[m_position];
 		++m_position;
 	}
 
-	if (value.length() > 1 && value.at(0) == '0' && value.at(1) != '.')
+	if ((value.length() > 1 && value.at(0) == '0' && value.at(1) != '.') 
+		|| (dotsCount > 1)
+		|| hasNotAllowedSymbols)
 	{
 		return Token{ TT_ERROR };
 	}
@@ -179,6 +225,24 @@ Token CalcLexer::ReadId(char head)
 	}
 
 	return Token{ TT_ID, value };
+}
+
+Token CalcLexer::ProcessErrorSymbol(char head)
+{
+    /*
+	 * Reads all symbols after an error symbol and
+	 * returns one error token for whole ID.
+     */
+
+	std::string value;
+	value += head;
+
+	while (m_position < m_sources.size() && (!IsBlank(m_sources[m_position])))
+	{
+		++m_position;
+	}
+
+	return Token{ TT_ERROR };
 }
 
 }

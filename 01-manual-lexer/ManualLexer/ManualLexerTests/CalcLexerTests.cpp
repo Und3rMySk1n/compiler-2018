@@ -68,6 +68,17 @@ TEST_CASE("Can read one number", "[CalcLexer]") {
 	REQUIRE(Tokenize("9876543210") == TokenList{
 		Token{ TT_NUMBER, "9876543210" },
 		});
+	REQUIRE(Tokenize("1..2") == TokenList{
+		Token{ TT_ERROR },
+	});
+	REQUIRE(Tokenize("1.2.366666") == TokenList{
+		Token{ TT_ERROR },
+	});
+	REQUIRE(Tokenize("1.2.366666+abc") == TokenList{
+		Token{ TT_ERROR },
+		Token{ TT_PLUS },
+		Token{ TT_ID, "abc" },
+	});
 }
 
 TEST_CASE("Can read one operator", "[CalcLexer]") {
@@ -111,6 +122,12 @@ TEST_CASE("Can read expression tokens", "[CalcLexer]") {
 		Token{ TT_PLUS },
 		Token{ TT_NUMBER, "1" },
 		});
+	REQUIRE(Tokenize(".5778") == TokenList{
+		Token{ TT_ERROR }
+	});
+	REQUIRE(Tokenize("5.672.105") == TokenList{
+		Token{ TT_ERROR }
+	});
 #endif
 }
 
@@ -265,6 +282,9 @@ TEST_CASE("Can read ID which starts with character") {
 	REQUIRE(Tokenize("_12___132__strange___ID__") == TokenList{
 		Token{ TT_ID, "_12___132__strange___ID__" }
 		});
+	REQUIRE(Tokenize("1abc") == TokenList{
+		Token{ TT_ERROR }
+	});
 }
 
 TEST_CASE("Can read expressions with IDs") {

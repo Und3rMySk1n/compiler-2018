@@ -29,7 +29,7 @@ enum TokenType
 
 struct Token
 {
-	TokenType type;
+	TokenType type; // кастить к типу TokenType
 	boost::optional<std::string> value;
 };
 

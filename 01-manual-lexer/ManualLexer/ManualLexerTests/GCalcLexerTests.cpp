@@ -61,6 +61,10 @@ TEST_CASE("Generated lexer can read expression tokens", "[GCalcLexer]") {
 		GToken{ TK_NUMBER, "28" },
 	});
 
+	REQUIRE(Tokenize("00") == TokenList{
+		GToken{ TK_ERROR }
+	});
+
 	REQUIRE(Tokenize("13+1-28*27/10") == TokenList{
 		GToken{ TK_NUMBER, "13" },
 		GToken{ TK_PLUS },
