@@ -2,7 +2,7 @@
 #include <cctype>
 
 // 1. Число не может начинаться с точки (например .5), покрыть тестами
-// 2. ЧИсло, которое начинается с цифр, а продолжается невалидными символами, должно возвращать токен с ошибкой
+// 2. Число, которое начинается с цифр, а продолжается невалидными символами, должно возвращать токен с ошибкой
 // 3. Переименовать функцию IsTabulation
 
 namespace calc
@@ -237,7 +237,7 @@ Token CalcLexer::ProcessErrorSymbol(char head)
 	std::string value;
 	value += head;
 
-	while (m_position < m_sources.size() && (!IsBlank(m_sources[m_position])))
+	while (m_position < m_sources.size() && (!IsBreakingSymbol(m_sources[m_position])))
 	{
 		++m_position;
 	}
