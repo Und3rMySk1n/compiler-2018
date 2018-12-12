@@ -96,7 +96,7 @@ CalcLexer::CalcLexer(std::string &sources)
 {
 }
 
-Token CalcLexer::Read()
+Token CalcLexer::Read(bool movePosition)
 {
 	/*
      * Reads next token from input string with following steps:
@@ -114,7 +114,16 @@ Token CalcLexer::Read()
 	}
 
 	char next = m_sources[m_position];
-	++m_position;
+	size_t position = m_position;
+
+	if (movePosition)
+	{
+		++m_position;
+	}
+	else
+	{
+		++position;
+	}
 
 	switch (next)
 	{
@@ -141,19 +150,19 @@ Token CalcLexer::Read()
 	case ',':
 		return Token{ TT_COMMA };
 	case '.':
-		return ProcessErrorSymbol(next);
+		return (movePosition) ? ProcessErrorSymbol(next, m_position) : ProcessErrorSymbol(next, position);
 	default:
 		break;
 	}
 
 	if (IsDigit(next))
 	{
-		return ReadNumber(next);
+		return (movePosition) ? ReadNumber(next, m_position) : ReadNumber(next, position);
 	}
 
 	if (IsIdCharacter(next))
 	{
-		return ReadId(next);
+		return (movePosition) ? ReadId(next, m_position) : ReadId(next, position);
 	}
 
 	return Token{ TT_ERROR };
@@ -167,7 +176,7 @@ void CalcLexer::SkipSpaces()
 	}
 }
 
-Token CalcLexer::ReadNumber(char head)
+Token CalcLexer::ReadNumber(char head, size_t &position)
 {
 	/*
 	 * Reads the tail of number token and returns this token.
@@ -181,20 +190,20 @@ Token CalcLexer::ReadNumber(char head)
 	int dotsCount = 0;
 	bool hasNotAllowedSymbols = false;
 
-	while (m_position < m_sources.size() && !IsBreakingSymbol(m_sources[m_position]))
+	while (position < m_sources.size() && !IsBreakingSymbol(m_sources[position]))
 	{
-		if (!IsDigit(m_sources[m_position]) && m_sources[m_position] != '.')
+		if (!IsDigit(m_sources[position]) && m_sources[position] != '.')
 		{
 			hasNotAllowedSymbols = true;
 		}
 
-		if (m_sources[m_position] == '.')
+		if (m_sources[position] == '.')
 		{
 			dotsCount++;
 		}
 
-		value += m_sources[m_position];
-		++m_position;
+		value += m_sources[position];
+		++position;
 	}
 
 	if ((value.length() > 1 && value.at(0) == '0' && value.at(1) != '.') 
@@ -207,7 +216,7 @@ Token CalcLexer::ReadNumber(char head)
 	return Token{ TT_NUMBER, value };
 }
 
-Token CalcLexer::ReadId(char head)
+Token CalcLexer::ReadId(char head, size_t &position)
 {
 	/*
 	 * Reads the tail of ID token and returns this token.
@@ -218,16 +227,16 @@ Token CalcLexer::ReadId(char head)
 	std::string value;
 	value += head;
 
-	while (m_position < m_sources.size() && (IsIdCharacter(m_sources[m_position]) || IsDigit(m_sources[m_position])))
+	while (position < m_sources.size() && (IsIdCharacter(m_sources[position]) || IsDigit(m_sources[position])))
 	{
-		value += m_sources[m_position];
-		++m_position;
+		value += m_sources[position];
+		++position;
 	}
 
 	return Token{ TT_ID, value };
 }
 
-Token CalcLexer::ProcessErrorSymbol(char head)
+Token CalcLexer::ProcessErrorSymbol(char head, size_t &position)
 {
     /*
 	 * Reads all symbols after an error symbol and
@@ -237,9 +246,9 @@ Token CalcLexer::ProcessErrorSymbol(char head)
 	std::string value;
 	value += head;
 
-	while (m_position < m_sources.size() && (!IsBreakingSymbol(m_sources[m_position])))
+	while (position < m_sources.size() && (!IsBreakingSymbol(m_sources[position])))
 	{
-		++m_position;
+		++position;
 	}
 
 	return Token{ TT_ERROR };

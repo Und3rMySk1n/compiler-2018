@@ -24,13 +24,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\ManualLexer\CalcLexer.h">
+    <ClInclude Include="CalcParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\ManualLexer\Token.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ManualParser\CalcParser.h">
+    <ClInclude Include="Expression.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,13 +35,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ManualParserSolution.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ManualLexer\CalcLexer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ManualParser\CalcParser.cpp">
+    <ClCompile Include="CalcParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

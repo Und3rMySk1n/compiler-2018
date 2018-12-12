@@ -2,19 +2,25 @@
 //
 
 #include "stdafx.h"
-#include "../ManualLexer/CalcLexer.h"
 #include <boost/optional/optional_io.hpp>
+
+#include "../ManualLexer/CalcLexer.h"
+#include "../ManualParser/CalcParser.h"
 
 using namespace std;
 using namespace calc;
 
 int main()
 {
-	string inputString = "+";
-	CalcLexer lexer = CalcLexer(inputString);
-	Token token = lexer.Read();
+	string inputString;
+	getline(cin, inputString);
 
-	cout << "Token type: " << token.type << " and value: " << token.value << endl;
+	CalcLexer lexer = CalcLexer(inputString);
+	CCalcParser parser = CCalcParser(lexer);
+
+	double parsedNumber = parser.Calculate();
+	cout << "Parsed: " << parsedNumber << endl;
+
     return 0;
 }
 

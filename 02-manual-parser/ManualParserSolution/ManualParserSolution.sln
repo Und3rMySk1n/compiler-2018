@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManualParserSolution", "Man
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManualLexer", "ManualLexer\ManualLexer.vcxproj", "{4540D49D-8691-4918-8C95-57584012B25E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManualParser", "ManualParser\ManualParser.vcxproj", "{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{4540D49D-8691-4918-8C95-57584012B25E}.Release|x64.Build.0 = Release|x64
 		{4540D49D-8691-4918-8C95-57584012B25E}.Release|x86.ActiveCfg = Release|Win32
 		{4540D49D-8691-4918-8C95-57584012B25E}.Release|x86.Build.0 = Release|Win32
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Debug|x64.ActiveCfg = Debug|x64
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Debug|x64.Build.0 = Debug|x64
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Debug|x86.ActiveCfg = Debug|Win32
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Debug|x86.Build.0 = Debug|Win32
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Release|x64.ActiveCfg = Release|x64
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Release|x64.Build.0 = Release|x64
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Release|x86.ActiveCfg = Release|Win32
+		{70D0AEB3-A9E1-4AFF-9506-0621DAE5EB81}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
